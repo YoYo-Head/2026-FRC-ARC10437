@@ -6,13 +6,12 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
-import java.frc.robot.Configs.DriveSystemConfig;
+import frc.robot.Configs.DriveSystemConfig;
 
 public class DriveSystem {
     /* CREATING VARIABLES FOR DIFFERENT THINGS */
     // Creating 'drive'
-    private DifferentialDrive drive;
+    private DifferentialDrive robotDrive;
     
     // Creating all the different SparkMaxes for driving motors
     private final SparkMax rightMotorA = new SparkMax(1, SparkMax.MotorType.kBrushed);
@@ -39,10 +38,18 @@ public class DriveSystem {
     
         /* SETTING UP THE DRIVE TRAIN */
         // Setting up what motors are going to be used in 'drive' control system
-        drive = new DifferentialDrive(leftMotorA::set, rightMotorA::set); 
+        robotDrive = new DifferentialDrive(leftMotorA::set, rightMotorA::set); 
     
-
-
     }
     
+    public void drive(double SpeedInput, double TurnInput) {
+        double speedDivisor = DriveSystemConfig.SpeedDivisor;
+        double turnDivisor = DriveSystemConfig.TurnDivisor;
+
+        double trueSpeed = SpeedInput * speedDivisor;
+        double trueTurn = TurnInput * turnDivisor;
+
+        robotDrive.arcadeDrive(trueSpeed, trueTurn);
+
+    }
 }
