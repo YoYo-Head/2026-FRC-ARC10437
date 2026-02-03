@@ -4,16 +4,24 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Systems.DriveSystem;
 
-/**
- * This is a demo program showing the use of the DifferentialDrive class, specifically it contains
- * the code necessary to operate a robot with tank drive.
- */
 public class Robot extends TimedRobot {
+
+    private DriveSystem drivesystem = new DriveSystem();
+    private XboxController controller = new XboxController(0);
+    
+    public Robot() {
+       drivesystem.driveSystemInit();
+
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        drivesystem.drive(controller.getLeftY(), controller.getRightX());
+
+    }
   
 }
