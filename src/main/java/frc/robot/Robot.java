@@ -5,27 +5,42 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.Systems.DriveSystem;
 import frc.robot.Systems.CameraSystem;
+import frc.robot.Systems.InstrumentSystem;
+import frc.robot.Systems.TelemetrySystem;
+
+import frc.robot.Configs.ControlConfig;
 
 public class Robot extends TimedRobot {
 
     private DriveSystem drivesystem = new DriveSystem();
     private CameraSystem camerasystem = new CameraSystem();
+    private InstrumentSystem instrumentsystem = new InstrumentSystem();
+    private TelemetrySystem telemetrysystem = new TelemetrySystem();
 
-    private XboxController controller = new XboxController(0);
+    private ControlConfig ControllerConfig = new ControlConfig();
     
     public Robot() {
        drivesystem.driveSystemInit();
-       camerasystem.cameraSystemInit();
+       
+    }
+
+    public void robotInit() {
+        camerasystem.cameraSystemInit();
+        instrumentsystem.initGyro();
+
+    }
+
+    public void robotPereodic() {
+        telemetrysystem.pushGyroInfo();
 
     }
 
     @Override
     public void teleopPeriodic() {
-        drivesystem.drive(controller.getLeftY(), controller.getRightX());
+        drivesystem.drive(ControllerConfig.SpeedJoystick, ControllerConfig.TurnJoystick);
 
     }
   
