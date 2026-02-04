@@ -13,6 +13,8 @@ import frc.robot.Systems.TelemetrySystem;
 
 import frc.robot.Configs.ControlConfig;
 
+import frc.robot.AutonomousPrograms.AutoDrive;
+
 public class Robot extends TimedRobot {
 
     private DriveSystem drivesystem = new DriveSystem();
@@ -21,6 +23,8 @@ public class Robot extends TimedRobot {
     private TelemetrySystem telemetrysystem = new TelemetrySystem();
 
     private ControlConfig ControllerConfig = new ControlConfig();
+
+    private AutoDrive autodrive = new AutoDrive();
     
     public Robot() {
        drivesystem.driveSystemInit();
@@ -41,6 +45,11 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         drivesystem.drive(ControllerConfig.SpeedJoystick, ControllerConfig.TurnJoystick);
+
+    }
+
+    public void autonomousPeriodic() {
+        autodrive.beginPathway();
 
     }
   
