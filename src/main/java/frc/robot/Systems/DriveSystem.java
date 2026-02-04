@@ -49,7 +49,7 @@ public class DriveSystem {
         double trueSpeed = SpeedInput * speedDivisor;
         double trueTurn = TurnInput * turnDivisor;
 
-        robotDrive.arcadeDrive(trueSpeed, trueTurn);
+        robotDrive.arcadeDrive(-trueSpeed, trueTurn);
 
     }
 }
