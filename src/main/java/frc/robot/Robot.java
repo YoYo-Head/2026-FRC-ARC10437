@@ -5,52 +5,36 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-
-import frc.robot.Systems.DriveSystem;
-import frc.robot.Systems.CameraSystem;
-import frc.robot.Systems.InstrumentSystem;
-import frc.robot.Systems.TelemetrySystem;
-
-import frc.robot.Configs.ControlConfig;
-
-import frc.robot.AutonomousPrograms.AutoDrive;
+import frc.robot.RobotContainer
 
 public class Robot extends TimedRobot {
 
-    private DriveSystem drivesystem = new DriveSystem();
-    private CameraSystem camerasystem = new CameraSystem();
-    private InstrumentSystem instrumentsystem = new InstrumentSystem();
-    private TelemetrySystem telemetrysystem = new TelemetrySystem();
+    private RobotContainer robotContainer = new RobotContainer();   
 
-    private ControlConfig ControllerConfig = new ControlConfig();
-
-    private AutoDrive autodrive = new AutoDrive();
     
     public Robot() {
-       drivesystem.driveSystemInit();
+        
        
     }
 
     public void robotInit() {
-        camerasystem.cameraSystemInit();
-        instrumentsystem.initGyro();
+        
 
     }
 
     public void robotPereodic() {
-        telemetrysystem.pushGyroInfo();
+        
 
     }
 
     @Override
     public void teleopPeriodic() {
-        drivesystem.drive(ControllerConfig.SpeedJoystick, ControllerConfig.TurnJoystick);
+        
 
     }
 
-    public void autonomousPeriodic() {
-        autodrive.beginPathway();
-
+    public void autonomousInit() {
+        robotContainer.getAutonomousCommand();
     }
   
 }
