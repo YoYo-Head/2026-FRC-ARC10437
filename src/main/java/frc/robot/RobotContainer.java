@@ -35,10 +35,13 @@ public class RobotContainer {
         controller.rightBumper().whileTrue(new LaunchSequence(fuelSubSystem));
         controller.a().whileTrue(new Eject(fuelSubSystem));
 
+        driveSubSystem.setDefaultCommand(new frc.robot.Commands.Drive(driveSubSystem, controller));
+        fuelSubSystem.setDefaultCommand(fuelSubSystem.run(() -> fuelSubSystem.stop()));
+
     }
 
     public void getAutonomousCommand() {
-        autoDrive.beginPathway();
+        //autoDrive.beginPathway();
     }
     
 }

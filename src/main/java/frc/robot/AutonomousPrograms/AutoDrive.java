@@ -72,12 +72,12 @@ public class AutoDrive {
         }
     
         // PUT PATHWAY INSTRUCTIONS HERE
-        public Command beginPathway() {
+        /*public Command beginPathway() {
             forward(2);
             turn(45);
             forward(5);
             turn(180);
  
-    }
+    } */
 
 }

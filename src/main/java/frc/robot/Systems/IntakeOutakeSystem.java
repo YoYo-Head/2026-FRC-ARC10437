@@ -6,7 +6,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkMax;
 
-public class IntakeOutakeSystem {
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class IntakeOutakeSystem extends SubsystemBase {
     private final SparkMax feederRoller = new SparkMax(5, MotorType.kBrushed);
     private final SparkMax intakeLauncherRoller = new SparkMax(6, MotorType.kBrushed);
 
@@ -30,6 +32,11 @@ public class IntakeOutakeSystem {
     public void setFeederSpeed(double voltage) {
         feederRoller.setVoltage(voltage);
 
+    }
+
+    public void stop() {
+        intakeLauncherRoller.setVoltage(0);
+        feederRoller.setVoltage(0);
     }
     
 }

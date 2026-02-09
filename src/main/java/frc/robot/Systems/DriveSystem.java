@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import frc.robot.Commands.Drive;
 import frc.robot.Configs.DriveSystemConfig;
 
 public class DriveSystem {
@@ -51,5 +52,10 @@ public class DriveSystem {
 
         robotDrive.arcadeDrive(-trueSpeed, trueTurn);
 
+    }
+
+    public void setDefaultCommand(Drive drive) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setDefaultCommand'");
     }
 }

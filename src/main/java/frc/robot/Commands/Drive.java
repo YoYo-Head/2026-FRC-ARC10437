@@ -2,13 +2,15 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Systems.DriveSystem;
-import frc.robot.Configs.ControlConfig;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class Drive extends Command {
     DriveSystem driveSubSystem;
+    CommandXboxController DriveController;
 
-    public Drive(DriveSystem driveSystem) {
-        this.driveSubSystem = driveSystem;
+    public Drive(DriveSystem driveSystem, CommandXboxController controller) {
+        driveSubSystem = driveSystem;
+        DriveController = controller;
     }
 
     @Override
@@ -18,7 +20,7 @@ public class Drive extends Command {
 
     @Override
     public void execute() {
-        driveSubSystem.drive(ControlConfig.SpeedJoystick, ControlConfig.TurnJoystick);
+        driveSubSystem.drive(DriveController.getLeftY(), DriveController.getRightX());
         
     }
 
