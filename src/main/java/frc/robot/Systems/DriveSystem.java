@@ -2,18 +2,22 @@ package frc.robot.Systems;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Commands.Drive;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.Configs.DriveSystemConfig;
 
-public class DriveSystem {
+public class DriveSystem extends SubsystemBase {
     /* CREATING VARIABLES FOR DIFFERENT THINGS */
     // Creating 'drive'
     private DifferentialDrive robotDrive;
-    
+    private InstrumentSystem instrumentsystem = new InstrumentSystem();
+
     // Creating all the different SparkMaxes for driving motors
     private final SparkMax rightMotorA = new SparkMax(1, SparkMax.MotorType.kBrushed);
     private final SparkMax rightMotorB = new SparkMax(2, SparkMax.MotorType.kBrushed);
@@ -43,19 +47,64 @@ public class DriveSystem {
     
     }
     
-    public void drive(double SpeedInput, double TurnInput) {
-        double speedDivisor = DriveSystemConfig.SpeedDivisor;
-        double turnDivisor = DriveSystemConfig.TurnDivisor;
+    public Command drive(double speedInput, double turnInput) {
 
-        double trueSpeed = SpeedInput * speedDivisor;
-        double trueTurn = TurnInput * turnDivisor;
+        return run(() -> {
 
-        robotDrive.arcadeDrive(-trueSpeed, trueTurn);
+            double trueSpeed = speedInput * DriveSystemConfig.SpeedDivisor;
+            double trueTurn  = turnInput  * DriveSystemConfig.TurnDivisor;
 
+            robotDrive.arcadeDrive(-trueSpeed, trueTurn);
+
+        }).finallyDo(interrupted -> {
+            robotDrive.arcadeDrive(0, 0);
+        });
+    }
+     
+        
+    public Command forward(double metresTarget) {
+
+        double time = (metresTarget + 0.66) / 0.565;
+        double kp = 1;
+
+        return run(() -> {
+
+            double yaw = instrumentsystem.gyro.getYaw();
+            double correction = kp * -yaw / 180;
+
+            robotDrive.arcadeDrive(0.5, correction);
+
+        }).withTimeout(time)
+          .finallyDo(interrupted -> {
+              robotDrive.arcadeDrive(0, 0);
+          });
     }
 
-    public void setDefaultCommand(Drive drive) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setDefaultCommand'");
-    }
+    
+    public Command turn(double targetDegrees) {
+
+        double kP = 0.01; // you will tune this
+
+        return run(() -> {
+
+            double currentYaw = instrumentsystem.gyro.getYaw();
+            double error = targetDegrees - currentYaw;
+
+            double turnSpeed = kP * error;
+
+            // Optional clamp so it doesn’t spin too fast
+            turnSpeed = Math.max(-0.6, Math.min(0.6, turnSpeed));
+
+            robotDrive.arcadeDrive(0, turnSpeed);
+
+        })
+        .until(() -> 
+            Math.abs(targetDegrees - instrumentsystem.gyro.getYaw()) < 2
+        )
+        .finallyDo(interrupted -> {
+            robotDrive.arcadeDrive(0, 0);
+        });
+}
+
+
 }

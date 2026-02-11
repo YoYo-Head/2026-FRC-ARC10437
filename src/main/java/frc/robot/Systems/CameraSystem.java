@@ -2,10 +2,10 @@ package frc.robot.Systems;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-
 import frc.robot.Configs.CameraSystemConfig;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class CameraSystem {
+public class CameraSystem extends SubsystemBase{
 
     private UsbCamera camera;
 
@@ -16,5 +16,7 @@ public class CameraSystem {
         camera.setResolution(CameraSystemConfig.cameraResWidth, CameraSystemConfig.cameraResHeight);
 
     }
+
+
     
 }

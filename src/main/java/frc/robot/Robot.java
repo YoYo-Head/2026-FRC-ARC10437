@@ -12,23 +12,18 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
-    private RobotContainer robotContainer = new RobotContainer();  
+    private RobotContainer robotContainer;
     private Command m_AutonomousComamnd; 
 
-    
-    public Robot() {
-        
-       
-    }
-
+    @Override
     public void robotInit() {
         robotContainer = new RobotContainer();
 
         HAL.report(tResourceType.kResourceType_Framework, 10);
         
-
     }
 
+    @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         
@@ -36,13 +31,20 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void teleopPeriodic() {
-        
-
+    public void teleopInit() {
+        if (m_AutonomousComamnd != null) {
+            m_AutonomousComamnd.cancel();
+        }
     }
 
+    @Override
     public void autonomousInit() {
+        m_AutonomousComamnd = robotContainer.getAutonomousCommand();
         
+        if (m_AutonomousComamnd != null) {
+            m_AutonomousComamnd.schedule();
+
+        }
     }
   
 }

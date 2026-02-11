@@ -5,7 +5,9 @@ import com.studica.frc.AHRS.NavXComType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class InstrumentSystem {
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class InstrumentSystem extends SubsystemBase{
     public AHRS gyro;
 
     public void initGyro() {
