@@ -9,13 +9,13 @@ public class Drive extends Command {
     CommandXboxController DriveController;
 
     public Drive(DriveSystem driveSystem, CommandXboxController controller) {
-        driveSubSystem = driveSystem;
+        this.driveSubSystem = driveSystem;
         DriveController = controller;
     }
 
     @Override
     public void initialize() {
-        
+        driveSubSystem.driveSystemInit();
     }
 
     @Override

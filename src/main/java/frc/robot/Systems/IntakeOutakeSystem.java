@@ -8,9 +8,13 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import frc.robot.Configs.IntakeOutakeSystemConfig;
+
 public class IntakeOutakeSystem extends SubsystemBase {
-    private final SparkMax feederRoller = new SparkMax(5, MotorType.kBrushed);
-    private final SparkMax intakeLauncherRoller = new SparkMax(6, MotorType.kBrushed);
+    private IntakeOutakeSystemConfig IOSC = new IntakeOutakeSystemConfig();
+
+    private final SparkMax feederRoller = new SparkMax(IOSC.FeederRollerID, MotorType.kBrushed);
+    private final SparkMax intakeLauncherRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
 
     @SuppressWarnings("removal")
     public void intakeOutakeSystemInit() {

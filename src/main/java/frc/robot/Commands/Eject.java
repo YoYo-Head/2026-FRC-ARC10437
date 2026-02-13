@@ -2,8 +2,10 @@ package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Systems.IntakeOutakeSystem;
+import frc.robot.Configs.IntakeOutakeSystemConfig;
 
 public class Eject extends Command {
+    private IntakeOutakeSystemConfig IOSC = new IntakeOutakeSystemConfig();
     IntakeOutakeSystem fuelSubSystem;
 
     public Eject(IntakeOutakeSystem fuelSystem) {
@@ -12,8 +14,8 @@ public class Eject extends Command {
 
     @Override
     public void initialize() {
-        fuelSubSystem.setIntakeSpeed(10.0);
-        fuelSubSystem.setFeederSpeed(-12.0);
+        fuelSubSystem.setIntakeSpeed(IOSC.EjectIntakeVoltage);
+        fuelSubSystem.setFeederSpeed(IOSC.EjectFeederVoltage);
     }
 
     @Override

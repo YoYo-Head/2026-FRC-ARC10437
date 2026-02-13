@@ -17,12 +17,13 @@ public class DriveSystem extends SubsystemBase {
     // Creating 'drive'
     private DifferentialDrive robotDrive;
     private InstrumentSystem instrumentsystem = new InstrumentSystem();
+    private DriveSystemConfig DSC = new DriveSystemConfig();
 
     // Creating all the different SparkMaxes for driving motors
-    private final SparkMax rightMotorA = new SparkMax(1, SparkMax.MotorType.kBrushed);
-    private final SparkMax rightMotorB = new SparkMax(2, SparkMax.MotorType.kBrushed);
-    private final SparkMax leftMotorA = new SparkMax(3, SparkMax.MotorType.kBrushed);
-    private final SparkMax leftMotorB = new SparkMax(4, SparkMax.MotorType.kBrushed);
+    private final SparkMax rightMotorA = new SparkMax(DSC.FRightMotorID, SparkMax.MotorType.kBrushed);
+    private final SparkMax rightMotorB = new SparkMax(DSC.BRightMotorID, SparkMax.MotorType.kBrushed);
+    private final SparkMax leftMotorA = new SparkMax(DSC.FLeftMotorID, SparkMax.MotorType.kBrushed);
+    private final SparkMax leftMotorB = new SparkMax(DSC.BLeftMotorID, SparkMax.MotorType.kBrushed);
     
     @SuppressWarnings("removal")
     public void driveSystemInit() {
@@ -51,8 +52,8 @@ public class DriveSystem extends SubsystemBase {
 
         return run(() -> {
 
-            double trueSpeed = speedInput * DriveSystemConfig.SpeedDivisor;
-            double trueTurn  = turnInput  * DriveSystemConfig.TurnDivisor;
+            double trueSpeed = speedInput * DSC.SpeedDivisor;
+            double trueTurn  = turnInput  * DSC.TurnDivisor;
 
             robotDrive.arcadeDrive(-trueSpeed, trueTurn);
 
@@ -65,14 +66,13 @@ public class DriveSystem extends SubsystemBase {
     public Command forward(double metresTarget) {
 
         double time = (metresTarget + 0.66) / 0.565;
-        double kp = 1;
 
         return run(() -> {
 
             double yaw = instrumentsystem.gyro.getYaw();
-            double correction = kp * -yaw / 180;
+            double correction = DSC.ForwardKP * -yaw / 180;
 
-            robotDrive.arcadeDrive(0.5, correction);
+            robotDrive.arcadeDrive(DSC.ForwardSpeed, correction);
 
         }).withTimeout(time)
           .finallyDo(interrupted -> {
@@ -83,17 +83,14 @@ public class DriveSystem extends SubsystemBase {
     
     public Command turn(double targetDegrees) {
 
-        double kP = 0.01; // you will tune this
-
         return run(() -> {
 
             double currentYaw = instrumentsystem.gyro.getYaw();
             double error = targetDegrees - currentYaw;
 
-            double turnSpeed = kP * error;
+            double turnSpeed = DSC.TurnKP * error;
 
-            // Optional clamp so it doesn’t spin too fast
-            turnSpeed = Math.max(-0.6, Math.min(0.6, turnSpeed));
+            turnSpeed = Math.max(-DSC.MaxTurnSpeed, Math.min(DSC.MaxTurnSpeed, turnSpeed));
 
             robotDrive.arcadeDrive(0, turnSpeed);
 
