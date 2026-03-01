@@ -34,8 +34,8 @@ public class RobotContainer {
         controller.a().whileTrue(new Eject(fuelSubSystem));
 
         driveSubSystem.setDefaultCommand(new Drive(driveSubSystem, controller));
-        cameraSubSystem.setDefaultCommand(new Camera(cameraSubSystem));
-        instrumentSubSystem.setDefaultCommand(new Telemetry(instrumentSubSystem));
+        //cameraSubSystem.setDefaultCommand(new Camera(cameraSubSystem));
+        //instrumentSubSystem.setDefaultCommand(new Telemetry(instrumentSubSystem));
         fuelSubSystem.setDefaultCommand(fuelSubSystem.run(() -> fuelSubSystem.stop()));
 
     }

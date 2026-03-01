@@ -2,10 +2,10 @@ package frc.robot.Configs;
 
 public class DriveSystemConfig {
     // Spark Motor CAN Bus IDs
-    public int FLeftMotorID = 1;
-    public int FRightMotorID = 2;
-    public int BLeftMotorID = 3;
-    public int BRightMotorID = 4;
+    public int FLeftMotorID = 2;
+    public int FRightMotorID = 1;
+    public int BLeftMotorID = 4;
+    public int BRightMotorID = 3;
 
     // drive() variables
     public double SpeedDivisor = 1;

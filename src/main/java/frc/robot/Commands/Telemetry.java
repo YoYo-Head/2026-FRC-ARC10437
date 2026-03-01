@@ -9,6 +9,7 @@ public class Telemetry extends Command {
 
     public Telemetry(InstrumentSystem instrumentSystem) {
         this.instrumentSubSystem = instrumentSystem;
+        addRequirements(instrumentSubSystem);
     }
 
     @Override

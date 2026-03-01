@@ -6,6 +6,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.wpilibj.MotorSafety;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,6 +28,8 @@ public class DriveSystem extends SubsystemBase {
     
     @SuppressWarnings("removal")
     public void driveSystemInit() {
+
+        /* CONFIGURING THE LEADER MOTORS */
         SparkMaxConfig rightLeaderConfig = new SparkMaxConfig();
         rightLeaderConfig.inverted(true);
         rightMotorA.configure(rightLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -41,6 +44,8 @@ public class DriveSystem extends SubsystemBase {
         SparkMaxConfig followerConfigLeft = new SparkMaxConfig();
         followerConfigLeft.follow(leftMotorA.getDeviceId(), false); 
         leftMotorB.configure(followerConfigLeft, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        
+        
     
         /* SETTING UP THE DRIVE TRAIN */
         // Setting up what motors are going to be used in 'drive' control system
@@ -48,18 +53,12 @@ public class DriveSystem extends SubsystemBase {
     
     }
     
-    public Command drive(double speedInput, double turnInput) {
+    public void drive(double speedInput, double turnInput) {
+        double trueSpeed = speedInput * DSC.SpeedDivisor;
+        double trueTurn  = turnInput  * DSC.TurnDivisor;
 
-        return run(() -> {
+        robotDrive.arcadeDrive(trueTurn, -trueSpeed);
 
-            double trueSpeed = speedInput * DSC.SpeedDivisor;
-            double trueTurn  = turnInput  * DSC.TurnDivisor;
-
-            robotDrive.arcadeDrive(-trueSpeed, trueTurn);
-
-        }).finallyDo(interrupted -> {
-            robotDrive.arcadeDrive(0, 0);
-        });
     }
      
         

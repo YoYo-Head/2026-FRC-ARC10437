@@ -10,6 +10,7 @@ public class Eject extends Command {
 
     public Eject(IntakeOutakeSystem fuelSystem) {
         this.fuelSubSystem = fuelSystem;
+        addRequirements(fuelSubSystem);
     }
 
     @Override

@@ -8,6 +8,7 @@ public class Camera extends Command {
 
     public Camera(CameraSystem cameraSystem) {
         this.cameraSubSystem = cameraSystem;
+        addRequirements(cameraSystem);
     }
 
     @Override

@@ -10,11 +10,12 @@ public class SpinUp extends Command {
 
     public SpinUp(IntakeOutakeSystem fuelSystem) {
         this.fuelSubSystem = fuelSystem;
+        addRequirements(fuelSubSystem);
     }
 
     @Override
     public void initialize() {
-        fuelSubSystem.setIntakeSpeed(IOSC.SpinUpIntakeVoltage);
+        fuelSubSystem.setIntakeSpeed(-IOSC.SpinUpIntakeVoltage);
         fuelSubSystem.setFeederSpeed(IOSC.SpinUpFeederVoltage);
     }
 

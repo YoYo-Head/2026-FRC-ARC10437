@@ -10,6 +10,7 @@ public class Intake extends Command {
 
     public Intake(IntakeOutakeSystem fuelSystem) {
         this.fuelSubSystem = fuelSystem;
+        addRequirements(fuelSubSystem);
     }
 
     @Override

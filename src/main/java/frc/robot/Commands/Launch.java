@@ -10,6 +10,7 @@ public class Launch extends Command{
 
     public Launch(IntakeOutakeSystem fuelSystem) {
         this.fuelSubSystem = fuelSystem;
+        addRequirements(fuelSubSystem);
     }
 
     @Override
