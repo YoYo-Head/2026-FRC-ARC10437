@@ -16,7 +16,7 @@ public class SpinUp extends Command {
     @Override
     public void initialize() {
         fuelSubSystem.setIntakeSpeed(-IOSC.SpinUpIntakeVoltage);
-        fuelSubSystem.setFeederSpeed(IOSC.SpinUpFeederVoltage);
+        fuelSubSystem.setFeederSpeed(-IOSC.SpinUpFeederVoltage);
     }
 
     @Override
