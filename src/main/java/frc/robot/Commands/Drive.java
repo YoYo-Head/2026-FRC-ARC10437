@@ -16,7 +16,7 @@ public class Drive extends Command {
 
     @Override
     public void initialize() {
-        driveSubSystem.driveSystemInit();
+        //driveSubSystem.driveSystemInit();
     }
 
     @Override

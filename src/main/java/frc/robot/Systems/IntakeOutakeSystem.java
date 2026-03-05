@@ -17,7 +17,7 @@ public class IntakeOutakeSystem extends SubsystemBase {
     private final SparkMax intakeLauncherRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
 
     @SuppressWarnings("removal")
-    public void intakeOutakeSystemInit() {
+    public IntakeOutakeSystem () {
         SparkMaxConfig feederConfig = new SparkMaxConfig();
         //feederConfig.smartCurrentLimit(1000);
         feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

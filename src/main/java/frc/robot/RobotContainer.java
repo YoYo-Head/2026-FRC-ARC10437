@@ -15,6 +15,7 @@ import frc.robot.Systems.IntakeOutakeSystem;
 import frc.robot.Systems.DriveSystem;
 import frc.robot.Systems.InstrumentSystem;
 
+@SuppressWarnings("unused")
 public class RobotContainer {
     private final DriveSystem driveSubSystem = new DriveSystem();
     private final IntakeOutakeSystem fuelSubSystem = new IntakeOutakeSystem();
@@ -35,13 +36,13 @@ public class RobotContainer {
 
         driveSubSystem.setDefaultCommand(new Drive(driveSubSystem, controller));
         //cameraSubSystem.setDefaultCommand(new Camera(cameraSubSystem));
-        //instrumentSubSystem.setDefaultCommand(new Telemetry(instrumentSubSystem));
+        instrumentSubSystem.setDefaultCommand(new Telemetry(instrumentSubSystem));
         fuelSubSystem.setDefaultCommand(fuelSubSystem.run(() -> fuelSubSystem.stop()));
 
     }
 
     public Command getAutonomousCommand() {
-        return new AutoDrive(driveSubSystem);
+        return new AutoDrive(driveSubSystem, instrumentSubSystem);
     }
     
 }
