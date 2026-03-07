@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,19 +34,29 @@ public class DriveSystem extends SubsystemBase {
     
     @SuppressWarnings("removal")
     public DriveSystem() {
+        /* SETTING UP THE DRIVE TRAIN */
+        // Setting up what motors are going to be used in 'drive' control system
+        robotDrive = new DifferentialDrive(FRightMotor, FLeftMotor);
+        robotDrive.setSafetyEnabled(false);
+
+        /* INCREASING CANBUS IDLE TIME OF MOTORS */
+        FRightMotor.setCANTimeout(DSC.CANTimeout);
+        BRightMotor.setCANTimeout(DSC.CANTimeout);
+        FLeftMotor.setCANTimeout(DSC.CANTimeout);
+        BLeftMotor.setCANTimeout(DSC.CANTimeout);
 
         /* CONFIGURING THE FOLLOWER MOTORS */
         SparkMaxConfig globalConfig = new SparkMaxConfig();
         SparkMaxConfig rightLeaderConfig = new SparkMaxConfig();
         SparkMaxConfig leftLeaderConfig = new SparkMaxConfig();
-        SparkMaxConfig followerConfigRight = new SparkMaxConfig();
-        SparkMaxConfig followerConfigLeft = new SparkMaxConfig();
+        SparkMaxConfig rightFollowerConfig = new SparkMaxConfig();
+        SparkMaxConfig leftFollowerConfig = new SparkMaxConfig();
 
         globalConfig
-            .smartCurrentLimit(50)
+            .smartCurrentLimit(DSC.GlobalSCL)
+            .voltageCompensation(DSC.GlobalVC)
             .idleMode(IdleMode.kCoast);
 
-        
         rightLeaderConfig
             .apply(globalConfig)
             .inverted(true);
@@ -55,25 +66,20 @@ public class DriveSystem extends SubsystemBase {
             .inverted(false);
 
         // On right side, motor B follows motor A
-        followerConfigRight
+        rightFollowerConfig
             .apply(globalConfig)
             .follow(FRightMotor);
 
         // On left side, motor B follows motor A
-        followerConfigLeft
+        leftFollowerConfig
             .apply(globalConfig)
             .follow(FLeftMotor); 
-
 
         FRightMotor.configure(rightLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         FLeftMotor.configure(leftLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        BRightMotor.configure(followerConfigRight, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        BLeftMotor.configure(followerConfigLeft, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-        /* SETTING UP THE DRIVE TRAIN */
-        // Setting up what motors are going to be used in 'drive' control system
-        robotDrive = new DifferentialDrive(FRightMotor, FLeftMotor); 
+        BRightMotor.configure(rightFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        BLeftMotor.configure(leftFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
     }
     
@@ -100,6 +106,7 @@ public class DriveSystem extends SubsystemBase {
         }).withTimeout(time)
           .finallyDo(interrupted -> {
               robotDrive.arcadeDrive(0, 0);
+              DriverStation.reportWarning("forward complete", false);
           });
     }
 
@@ -123,6 +130,7 @@ public class DriveSystem extends SubsystemBase {
         )
         .finallyDo(interrupted -> {
             robotDrive.arcadeDrive(0, 0);
+            DriverStation.reportWarning("turn complete", false);
         });
 }
 

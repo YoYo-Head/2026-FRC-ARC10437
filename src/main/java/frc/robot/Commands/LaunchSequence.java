@@ -6,7 +6,7 @@ import frc.robot.Systems.IntakeOutakeSystem;
 public class LaunchSequence extends SequentialCommandGroup {
     public LaunchSequence(IntakeOutakeSystem fuelSubSystem) {
         addCommands(
-            new SpinUp(fuelSubSystem),
+            new SpinUp(fuelSubSystem).withTimeout(1),
             new Launch(fuelSubSystem)
         );
     }

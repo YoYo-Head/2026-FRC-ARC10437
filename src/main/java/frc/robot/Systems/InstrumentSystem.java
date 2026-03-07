@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class InstrumentSystem extends SubsystemBase{
     public AHRS gyro;
 
-    public void initGyro() {
+    public InstrumentSystem() {
         try {
             gyro = new AHRS(NavXComType.kMXP_SPI);
 

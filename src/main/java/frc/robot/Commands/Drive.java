@@ -10,7 +10,7 @@ public class Drive extends Command {
 
     public Drive(DriveSystem driveSystem, CommandXboxController controller) {
         this.driveSubSystem = driveSystem;
-        DriveController = controller;
+        this.DriveController = controller;
         addRequirements(driveSubSystem);
     }
 

@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
         m_AutonomousComamnd = robotContainer.getAutonomousCommand();
         
         if (m_AutonomousComamnd != null) {
-            m_AutonomousComamnd.schedule();
+            CommandScheduler.getInstance().schedule(m_AutonomousComamnd);
 
         }
     }

@@ -7,6 +7,11 @@ public class DriveSystemConfig {
     public int BLeftMotorID = 4;
     public int BRightMotorID = 3;
 
+    // SparkMax Configs
+    public int GlobalSCL = 50;
+    public int GlobalVC = 12;
+    public int CANTimeout = 250;
+
     // drive() variables
     public double SpeedDivisor = 1;
     public double TurnDivisor = 0.75;

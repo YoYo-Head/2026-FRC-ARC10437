@@ -14,7 +14,6 @@ public class Telemetry extends Command {
 
     @Override
     public void initialize() {
-        instrumentSubSystem.initGyro();
         
     }
 
