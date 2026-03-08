@@ -21,7 +21,7 @@ public class DriveSystemConfig {
     public double ForwardSpeed = 0.5;
 
     // turn() variables
-    public double TurnKP = 0.01;
+    public double TurnKP = 0.005;
     public double MaxTurnSpeed = 0.6;
 
 }

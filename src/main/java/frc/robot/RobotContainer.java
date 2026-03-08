@@ -1,9 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.AutonomousPrograms.AutoDrive;
+import frc.robot.AutonomousPrograms.ExampleAuto;
 import frc.robot.Commands.Drive;
 import frc.robot.Commands.Camera;
 import frc.robot.Commands.Eject;
@@ -17,6 +20,8 @@ import frc.robot.Systems.InstrumentSystem;
 
 @SuppressWarnings("unused")
 public class RobotContainer {
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+
     private final DriveSystem driveSubSystem = new DriveSystem();
     private final IntakeOutakeSystem fuelSubSystem = new IntakeOutakeSystem();
     private final CameraSystem cameraSubSystem = new CameraSystem();
@@ -26,6 +31,11 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
+
+        autoChooser.addOption("Gyro Drive", new AutoDrive(driveSubSystem, instrumentSubSystem));
+        autoChooser.addOption("Shoot Program", new ExampleAuto(driveSubSystem, fuelSubSystem));
+
+        SmartDashboard.putData("Auto Choices", autoChooser);
 
     }
 
@@ -42,7 +52,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new AutoDrive(driveSubSystem, instrumentSubSystem);
+        return autoChooser.getSelected();
+
     }
     
 }

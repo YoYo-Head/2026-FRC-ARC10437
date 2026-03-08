@@ -81,13 +81,13 @@ public class DriveSystem extends SubsystemBase {
         BRightMotor.configure(rightFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         BLeftMotor.configure(leftFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     
-    }
+    } 
     
     public void drive(double speedInput, double turnInput) {
         double trueSpeed = speedInput * DSC.SpeedDivisor;
         double trueTurn  = turnInput  * DSC.TurnDivisor;
 
-        robotDrive.arcadeDrive(-trueSpeed, trueTurn);
+        robotDrive.arcadeDrive(trueSpeed, -trueTurn);
 
     }
      
@@ -116,11 +116,11 @@ public class DriveSystem extends SubsystemBase {
         return run(() -> {
 
             double currentYaw = instrumentSystem.gyro.getYaw();
-            double error = targetDegrees - currentYaw;
+            double target = currentYaw - targetDegrees ;
 
-            double turnSpeed = DSC.TurnKP * error;
+            if (target < 360) return;
 
-            turnSpeed = Math.max(-DSC.MaxTurnSpeed, Math.min(DSC.MaxTurnSpeed, turnSpeed));
+            double turnSpeed = DSC.MaxTurnSpeed;
 
             robotDrive.arcadeDrive(0, turnSpeed);
 
