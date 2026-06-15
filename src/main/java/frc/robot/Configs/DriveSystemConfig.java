@@ -2,10 +2,10 @@ package frc.robot.Configs;
 
 public class DriveSystemConfig {
     // Spark Motor CAN Bus IDs
-    public int FLeftMotorID = 2;
+    public int FLeftMotorID = 3;
     public int FRightMotorID = 1;
     public int BLeftMotorID = 4;
-    public int BRightMotorID = 3;
+    public int BRightMotorID = 2;
 
     // SparkMax Configs
     public int GlobalSCL = 50;
@@ -22,6 +22,6 @@ public class DriveSystemConfig {
 
     // turn() variables
     public double TurnKP = 0.005;
-    public double MaxTurnSpeed = 0.6;
+    public double TurnSpeed = 0.4;
 
 }

@@ -29,105 +29,107 @@ public class DriveSystem extends SubsystemBase {
     private final SparkMax BRightMotor = new SparkMax(DSC.BRightMotorID, SparkMax.MotorType.kBrushed);
     private final SparkMax FLeftMotor = new SparkMax(DSC.FLeftMotorID, SparkMax.MotorType.kBrushed);  // Front Left
     private final SparkMax BLeftMotor = new SparkMax(DSC.BLeftMotorID, SparkMax.MotorType.kBrushed);
-
-    // Instrument system for gyro
+    private double currentYaw;
+    private final boolean readyToStop = false;
     
-    @SuppressWarnings("removal")
-    public DriveSystem() {
-        /* SETTING UP THE DRIVE TRAIN */
-        // Setting up what motors are going to be used in 'drive' control system
-        robotDrive = new DifferentialDrive(FRightMotor, FLeftMotor);
-        robotDrive.setSafetyEnabled(false);
-
-        /* INCREASING CANBUS IDLE TIME OF MOTORS */
-        FRightMotor.setCANTimeout(DSC.CANTimeout);
-        BRightMotor.setCANTimeout(DSC.CANTimeout);
-        FLeftMotor.setCANTimeout(DSC.CANTimeout);
-        BLeftMotor.setCANTimeout(DSC.CANTimeout);
-
-        /* CONFIGURING THE FOLLOWER MOTORS */
-        SparkMaxConfig globalConfig = new SparkMaxConfig();
-        SparkMaxConfig rightLeaderConfig = new SparkMaxConfig();
-        SparkMaxConfig leftLeaderConfig = new SparkMaxConfig();
-        SparkMaxConfig rightFollowerConfig = new SparkMaxConfig();
-        SparkMaxConfig leftFollowerConfig = new SparkMaxConfig();
-
-        globalConfig
-            .smartCurrentLimit(DSC.GlobalSCL)
-            .voltageCompensation(DSC.GlobalVC)
-            .idleMode(IdleMode.kCoast);
-
-        rightLeaderConfig
-            .apply(globalConfig)
-            .inverted(true);
-
-        leftLeaderConfig
-            .apply(globalConfig)
-            .inverted(false);
-
-        // On right side, motor B follows motor A
-        rightFollowerConfig
-            .apply(globalConfig)
-            .follow(FRightMotor);
-
-        // On left side, motor B follows motor A
-        leftFollowerConfig
-            .apply(globalConfig)
-            .follow(FLeftMotor); 
-
-        FRightMotor.configure(rightLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        FLeftMotor.configure(leftLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        BRightMotor.configure(rightFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        BLeftMotor.configure(leftFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    
-    } 
-    
-    public void drive(double speedInput, double turnInput) {
-        double trueSpeed = speedInput * DSC.SpeedDivisor;
-        double trueTurn  = turnInput  * DSC.TurnDivisor;
-
-        robotDrive.arcadeDrive(trueSpeed, -trueTurn);
-
-    }
-     
+        // Instrument system for gyro
         
-    public Command forward(double metresTarget, InstrumentSystem instrumentSystem) {
-
-        double time = (metresTarget + 0.66) / 0.565;
-
-        return run(() -> {
-
-            double yaw = instrumentSystem.gyro.getYaw();
-            double correction = DSC.ForwardKP * -yaw / 180;
-
-            robotDrive.arcadeDrive(DSC.ForwardSpeed, correction);
-
-        }).withTimeout(time)
-          .finallyDo(interrupted -> {
-              robotDrive.arcadeDrive(0, 0);
-              DriverStation.reportWarning("forward complete", false);
-          });
-    }
-
+        @SuppressWarnings("removal")
+        public DriveSystem() {
+            /* SETTING UP THE DRIVE TRAIN */
+            // Setting up what motors are going to be used in 'drive' control system
+            robotDrive = new DifferentialDrive(FRightMotor, FLeftMotor);
+            robotDrive.setSafetyEnabled(false);
     
-    public Command turn(double targetDegrees, InstrumentSystem instrumentSystem) {
+            /* INCREASING CANBUS IDLE TIME OF MOTORS */
+            FRightMotor.setCANTimeout(DSC.CANTimeout);
+            BRightMotor.setCANTimeout(DSC.CANTimeout);
+            FLeftMotor.setCANTimeout(DSC.CANTimeout);
+            BLeftMotor.setCANTimeout(DSC.CANTimeout);
+    
+            /* CONFIGURING THE FOLLOWER MOTORS */
+            SparkMaxConfig globalConfig = new SparkMaxConfig();
+            SparkMaxConfig rightLeaderConfig = new SparkMaxConfig();
+            SparkMaxConfig leftLeaderConfig = new SparkMaxConfig();
+            SparkMaxConfig rightFollowerConfig = new SparkMaxConfig();
+            SparkMaxConfig leftFollowerConfig = new SparkMaxConfig();
+    
+            globalConfig
+                .smartCurrentLimit(DSC.GlobalSCL)
+                .voltageCompensation(DSC.GlobalVC)
+                .idleMode(IdleMode.kCoast);
+    
+            rightLeaderConfig
+                .apply(globalConfig)
+                .inverted(true);
+    
+            leftLeaderConfig
+                .apply(globalConfig)
+                .inverted(false);
+    
+            // On right side, motor B follows motor A
+            rightFollowerConfig
+                .apply(globalConfig)
+                .follow(FRightMotor);
+    
+            // On left side, motor B follows motor A
+            leftFollowerConfig
+                .apply(globalConfig)
+                .follow(FLeftMotor); 
+    
+            FRightMotor.configure(rightLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            FLeftMotor.configure(leftLeaderConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    
+            BRightMotor.configure(rightFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+            BLeftMotor.configure(leftFollowerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        
+        } 
+        
+        public void drive(double speedInput, double turnInput) {
+            double trueSpeed = speedInput * DSC.SpeedDivisor;
+            double trueTurn  = turnInput  * DSC.TurnDivisor;
+    
+            robotDrive.arcadeDrive(trueSpeed, -trueTurn);
+    
+        }
+         
+            
+        public Command forward(double metresTarget, InstrumentSystem instrumentSystem) {
+    
+            double time = (metresTarget + 0.66) / 0.565;
+    
+            return run(() -> {
+    
+                double yaw = instrumentSystem.gyro.getYaw();
+                double correction = DSC.ForwardKP * -yaw / 180;
+    
+                robotDrive.arcadeDrive(DSC.ForwardSpeed, correction);
+    
+            }).withTimeout(time)
+              .finallyDo(interrupted -> {
+                  robotDrive.arcadeDrive(0, 0);
+                  DriverStation.reportWarning("forward complete", false);
+              });
+        }
+    
+        
+        public Command turn(double targetDegrees, InstrumentSystem instrumentSystem) {
+    
+            
+            return run(() -> {
+                double currentYaw = instrumentSystem.gyro.getYaw();
 
-        return run(() -> {
+                if (currentYaw < targetDegrees) {
+                    robotDrive.arcadeDrive(0, DSC.TurnSpeed);
 
-            double currentYaw = instrumentSystem.gyro.getYaw();
-            double target = currentYaw - targetDegrees ;
+                } else {
+                    robotDrive.arcadeDrive(0, -DSC.TurnSpeed);
 
-            if (target < 360) return;
-
-            double turnSpeed = DSC.MaxTurnSpeed;
-
-            robotDrive.arcadeDrive(0, turnSpeed);
+                }        
 
         })
-        .until(() -> 
-            Math.abs(targetDegrees - instrumentSystem.gyro.getYaw()) < 2
-        )
+        .until(() ->
+            Math.abs(instrumentSystem.gyro.getYaw() - targetDegrees) < 2)
         .finallyDo(interrupted -> {
             robotDrive.arcadeDrive(0, 0);
             DriverStation.reportWarning("turn complete", false);

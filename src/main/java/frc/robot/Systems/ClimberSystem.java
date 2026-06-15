@@ -5,16 +5,19 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import frc.robot.Configs.ClimberSystemConfig;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberSystem extends SubsystemBase{
-    private final SparkMax CLMBMotor = new SparkMax(7, SparkMax.MotorType.kBrushed);
+    private final ClimberSystemConfig CSC = new ClimberSystemConfig();
+    private final SparkMax CLMBMotor = new SparkMax(CSC.CMBMotorID, SparkMax.MotorType.kBrushed);
 
     public ClimberSystem() {
         SparkMaxConfig globalConfig = new SparkMaxConfig();
 
         globalConfig
-            .smartCurrentLimit(5000);
+            .smartCurrentLimit(CSC.GlobalSCM);
 
         CLMBMotor.configure(globalConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     

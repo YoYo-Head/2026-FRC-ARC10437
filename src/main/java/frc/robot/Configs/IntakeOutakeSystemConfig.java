@@ -14,7 +14,7 @@ public class IntakeOutakeSystemConfig {
     public double EjectFeederVoltage = 8;
 
     public double IntakeIntakeVoltage = 7;
-    public double IntakeFeederVoltage = -12;
+    public double IntakeFeederVoltage = -10;
 
     public double LaunchIntakeVoltage = 10.6;
     public double LaunchFeederVoltage = 9;

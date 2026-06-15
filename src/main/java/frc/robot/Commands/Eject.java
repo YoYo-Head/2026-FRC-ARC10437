@@ -15,8 +15,8 @@ public class Eject extends Command {
 
     @Override
     public void initialize() {
-        fuelSubSystem.setIntakeSpeed(IOSC.EjectIntakeVoltage);
-        fuelSubSystem.setFeederSpeed(IOSC.EjectFeederVoltage);
+        fuelSubSystem.setIntakeSpeed(-IOSC.EjectFeederVoltage);
+        fuelSubSystem.setFeederSpeed(-IOSC.EjectIntakeVoltage);
     }
 
     @Override
