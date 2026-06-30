@@ -14,7 +14,11 @@ public class IntakeOutakeSystem extends SubsystemBase {
     private IntakeOutakeSystemConfig IOSC = new IntakeOutakeSystemConfig();
 
     private final SparkMax feederRoller = new SparkMax(IOSC.FeederRollerID, MotorType.kBrushed);
-    private final SparkMax intakeLauncherRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
+    //private final SparkMax intakeLauncherRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
+
+    private final SparkMax leadShooterRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
+    private final SparkMax follow1ShooterRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
+    private final SparkMax follow2ShooterRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
 
     @SuppressWarnings("removal")
     public IntakeOutakeSystem () {
@@ -22,14 +26,22 @@ public class IntakeOutakeSystem extends SubsystemBase {
         //feederConfig.smartCurrentLimit(1000);
         feederRoller.configure(feederConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        SparkMaxConfig launcherConfig = new SparkMaxConfig();
-        launcherConfig.inverted(true);
+        //SparkMaxConfig launcherConfig = new SparkMaxConfig();
+        //launcherConfig.inverted(true);
         //launcherConfig.smartCurrentLimit(1000);
-        intakeLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        //intakeLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        SparkMaxConfig followLeadRoller = new SparkMaxConfig();
+        followLeadRoller.follow(leadShooterRoller);
+
+        follow1ShooterRoller.configure(followLeadRoller, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        follow2ShooterRoller.configure(followLeadRoller, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
     }
 
-    public void setIntakeSpeed(double voltage) {
-        intakeLauncherRoller.setVoltage(voltage);
+    public void setShooterIntakeSpeed(double voltage) {
+        //intakeLauncherRoller.setVoltage(voltage);
+        leadShooterRoller.setVoltage(voltage);
 
     }
 
@@ -39,8 +51,9 @@ public class IntakeOutakeSystem extends SubsystemBase {
     }
 
     public void stop() {
-        intakeLauncherRoller.setVoltage(0);
+        //intakeLauncherRoller.setVoltage(0);
         feederRoller.setVoltage(0);
+        leadShooterRoller.setVoltage(0);
     }
     
 }
