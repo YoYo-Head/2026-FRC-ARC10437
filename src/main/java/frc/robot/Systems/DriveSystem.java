@@ -111,6 +111,24 @@ public class DriveSystem extends SubsystemBase {
                   DriverStation.reportWarning("forward complete", false);
               });
         }
+
+        public Command back(double metresTarget, InstrumentSystem instrumentSystem) {
+    
+            double time = (metresTarget + 0.66) / 0.565;
+    
+            return run(() -> {
+    
+                double yaw = instrumentSystem.gyro.getYaw();
+                double correction = DSC.ForwardKP * -yaw / 180;
+    
+                robotDrive.arcadeDrive(-DSC.ForwardSpeed , correction);
+    
+            }).withTimeout(time)
+              .finallyDo(interrupted -> {
+                  robotDrive.arcadeDrive(0, 0);
+                  DriverStation.reportWarning("forward complete", false);
+              });
+        }
     
         
         public Command turn(double targetDegrees, InstrumentSystem instrumentSystem) {
@@ -128,6 +146,7 @@ public class DriveSystem extends SubsystemBase {
                 }        
 
         })
+        .withTimeout(3)
         .until(() ->
             Math.abs(instrumentSystem.gyro.getYaw() - targetDegrees) < 2)
         .finallyDo(interrupted -> {

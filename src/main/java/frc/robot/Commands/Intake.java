@@ -17,6 +17,7 @@ public class Intake extends Command {
     public void initialize() {
         fuelSubSystem.setIntakeSpeed(IOSC.IntakeIntakeVoltage);
         fuelSubSystem.setFeederSpeed(IOSC.IntakeFeederVoltage);
+        fuelSubSystem.setBackSpeed(IOSC.IntakeBackVoltage);
     }
 
     @Override
@@ -28,6 +29,7 @@ public class Intake extends Command {
     public void end(boolean interrupted) {
         fuelSubSystem.setIntakeSpeed(0.0);
         fuelSubSystem.setFeederSpeed(0.0);
+        fuelSubSystem.setBackSpeed(0.0);
     }
 
     @Override

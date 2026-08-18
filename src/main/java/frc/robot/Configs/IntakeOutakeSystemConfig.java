@@ -2,8 +2,9 @@ package frc.robot.Configs;
 
 public class IntakeOutakeSystemConfig {
     // Spark Motor CAN Bus IDs
-    public int FeederRollerID = 6; 
-    public int IntakeLauncherRollerID = 5; // SHOOT on sparkmax
+    public int FeederRollerID = 5; 
+    public int IntakeLauncherRollerID = 6; // SHOOT on sparkmax
+    public int BackRollerID = 7; // Back intake sytem on sparkmax
 
     // Smart Current Limits for Motor
     public int IntakeSCL = 1000;
@@ -15,6 +16,7 @@ public class IntakeOutakeSystemConfig {
 
     public double IntakeIntakeVoltage = 7;
     public double IntakeFeederVoltage = -10;
+    public double IntakeBackVoltage = -13;
 
     public double LaunchIntakeVoltage = 10.6;
     public double LaunchFeederVoltage = 9;

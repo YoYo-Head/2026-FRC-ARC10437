@@ -12,10 +12,8 @@ public class AutoDrive extends SequentialCommandGroup {
         addRequirements(driveSubsystem, instrumentSubSystem);
 
         addCommands(
-            driveSubsystem.forward(1, instrumentSubSystem),
-            driveSubsystem.turn(45, instrumentSubSystem),
-            driveSubsystem.forward(2, instrumentSubSystem),
-            driveSubsystem.turn(180, instrumentSubSystem)
+            driveSubsystem.back(3, instrumentSubSystem)
+            
             
         );
     }

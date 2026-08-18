@@ -15,6 +15,7 @@ public class IntakeOutakeSystem extends SubsystemBase {
 
     private final SparkMax feederRoller = new SparkMax(IOSC.FeederRollerID, MotorType.kBrushed);
     private final SparkMax intakeLauncherRoller = new SparkMax(IOSC.IntakeLauncherRollerID, MotorType.kBrushed);
+    private final SparkMax backRoller = new SparkMax(IOSC.BackRollerID, MotorType.kBrushless);
 
     @SuppressWarnings("removal")
     public IntakeOutakeSystem () {
@@ -26,6 +27,8 @@ public class IntakeOutakeSystem extends SubsystemBase {
         launcherConfig.inverted(true);
         //launcherConfig.smartCurrentLimit(1000);
         intakeLauncherRoller.configure(launcherConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        
     }
 
     public void setIntakeSpeed(double voltage) {
@@ -38,9 +41,15 @@ public class IntakeOutakeSystem extends SubsystemBase {
 
     }
 
+    public void setBackSpeed(double voltage) {
+        backRoller.setVoltage(voltage);
+
+    } 
+
     public void stop() {
         intakeLauncherRoller.setVoltage(0);
         feederRoller.setVoltage(0);
+        backRoller.setVoltage(0);
     }
     
 }

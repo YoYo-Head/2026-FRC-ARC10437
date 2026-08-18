@@ -13,7 +13,7 @@ public class DriveSystemConfig {
     public int CANTimeout = 250;
 
     // drive() variables
-    public double SpeedDivisor = 1;
+    public double SpeedDivisor = 0.5;
     public double TurnDivisor = 0.75;
 
     // forward() variables
